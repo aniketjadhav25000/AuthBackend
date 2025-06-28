@@ -1,14 +1,18 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from backend.utils import generate_code_from_prompt
-from dotenv import load_dotenv
-
-import os # Required for path and env variable handling
-
-load_dotenv(dotenv_path=os.path.join(os.path.dirname(os.path.dirname(__file__)), ".env"))  
-# Load environment variables
 
 app = FastAPI()
+
+# ✅ Enable CORS for React (running at localhost:3000)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # Or ["*"] for all origins
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 class CodeRequest(BaseModel):
     prompt: str
